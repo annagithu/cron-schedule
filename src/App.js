@@ -6,11 +6,11 @@ import CronGenerator from './components/CronGenerator';
 
 function App() {
   return (
-    <div>
-      <div className='header'>
-        <h3>cron-editor</h3>
+    <div className='container'>
+      <div className = 'jumbotron'>
+        <h3 className='display-3' >cron-editor</h3>
       </div>
-      <div className='container'>
+      <div className='input-group'>
         <div className='buttons'>
           <CronGenerator />
         </div>

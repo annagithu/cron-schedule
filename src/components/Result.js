@@ -1,10 +1,11 @@
 import React, { useState } from "react"
 import SaveToFileButton from "./SaveToFileButton"
+import LoadButton from "./LoadButton";
 
 function Result(props) {
 
     const [value, setValue] = useState('');
-    const [isVisible, setVisible] = useState();
+    const [isVisible, setVisible] = useState(); 
 
     let dayOfWeek = props.dayOfWeek
     let month = new Date(props.date).toLocaleString('en-EN', { month: "numeric" })
@@ -17,6 +18,11 @@ function Result(props) {
 
         return `${props.minute} ${props.hour} ${day} ${month} ${dayOfWeek}`
     }
+
+    const handleLoadButton = () => {
+        
+    } 
+
 
     const handleInputChange = (e) => {
         const inputValue = e.target.value
@@ -36,9 +42,11 @@ function Result(props) {
 
     return (
         <div>
+            <LoadButton onClick = {handleLoadButton} visible = {isVisible}/>
             <input
                 id="input"
                 type="text"
+                className="input-group"
                 value={props.disabled ? generateCronString() : value}
                 disabled={props.disabled}
                 onChange={handleInputChange}

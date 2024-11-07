@@ -6,7 +6,6 @@ import HourSelection from './HourSection'
 import DateSelection from './DateSelection'
 import PeriodSection from './PeriodSection'
 import ChangeButton from './ChangeButton'
-import LoadButton from './LoadButton'
 
 const CronGenerator = () => {
 
@@ -27,6 +26,7 @@ const CronGenerator = () => {
 
       const handleInputChange = (event) => {
         setResultValue(event.target.value)
+        
       };
 
       const handleDayChange = (newDay) => {
@@ -62,8 +62,6 @@ const CronGenerator = () => {
         <HourSelection onHourChange={handleHourChange} />
 
         <ChangeButton onClick={handleChangeButton} />
-
-        <LoadButton visible = {isVisible}/>
      
         <Result onChange={handleInputChange} period = {period} dayOfWeek = {dayOfWeek} date = {date} minute = {selectedMinutes} hour = {hour} value={resultValue} disabled={isDisabled}/>
       
