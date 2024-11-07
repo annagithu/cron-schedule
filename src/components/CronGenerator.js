@@ -6,6 +6,7 @@ import HourSelection from './HourSection'
 import DateSelection from './DateSelection'
 import PeriodSection from './PeriodSection'
 import ChangeButton from './ChangeButton'
+import { useEffect } from 'react'
 
 const CronGenerator = () => {
 
@@ -17,17 +18,24 @@ const CronGenerator = () => {
 
     const [isDisabled, setIsDisabled] = useState(true)
     const [resultValue, setResultValue] = useState('')
-    const [isVisible, setVisible] = useState(false)
 
     const handleChangeButton = () => {
         setIsDisabled(prev => !prev)
-        setVisible(prev => !prev)
       };
 
       const handleInputChange = (event) => {
         setResultValue(event.target.value)
-        
       };
+
+      const handleLoad = (loadValue) => {
+        setSelectedMinutes(loadValue[0])
+        setSelectedHour(loadValue[1])
+        setSelectedDate(`${loadValue[3]}-${loadValue[2]}-${new Date().getFullYear().toString()}`) 
+        setDayOfWeek(loadValue[4])
+        setSelectedPeriod("Custom")
+      };
+
+      useEffect(() => { }, [dayOfWeek]);
 
       const handleDayChange = (newDay) => {
         setDayOfWeek(newDay)
@@ -63,7 +71,16 @@ const CronGenerator = () => {
 
         <ChangeButton onClick={handleChangeButton} />
      
-        <Result onChange={handleInputChange} period = {period} dayOfWeek = {dayOfWeek} date = {date} minute = {selectedMinutes} hour = {hour} value={resultValue} disabled={isDisabled}/>
+        <Result onLoad={handleLoad}
+        onChange={handleInputChange} 
+        period = {period} 
+        dayOfWeek = {dayOfWeek} 
+        date = {date} 
+        minute = {selectedMinutes} 
+        hour = {hour} 
+        value={resultValue} 
+        disabled={isDisabled}
+        />
       
     </div>
   )
