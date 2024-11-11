@@ -20,6 +20,7 @@ class CronGenerator extends Component {
       month: '*',
       year: new Date().getFullYear(),
       isResultVisible: false,
+      isPeriodVisible: false,
       isSaveButtonEnable: true,
       resultData: '',
     };
@@ -39,6 +40,9 @@ class CronGenerator extends Component {
     this.setState((prevState) => ({
       isResultVisible: !prevState.isResultVisible,
     }));
+    let{isResultVisible} = this.state;
+    if (isResultVisible) {this.setState({isPeriodVisible: false})}
+    else {this.setState({isPeriodVisible: true})}
   };
 
   handleResultChange = (e) => {
@@ -86,11 +90,11 @@ class CronGenerator extends Component {
   };
 
   render() {
-    const { selectedPeriod, dayOfWeek, minute, hour, month, isResultVisible, resultData, year, day, isSaveButtonEnable } = this.state;
+    const { selectedPeriod, dayOfWeek, minute, hour, month, isResultVisible, resultData, year, day, isSaveButtonEnable, isPeriodVisible } = this.state;
 
     return (
       <div>
-        <PeriodSection selectedPeriod={selectedPeriod} setSelectedPeriod={(period) => this.setState({ selectedPeriod: period })} />
+        <PeriodSection selectedPeriod={selectedPeriod} isVisible = {isPeriodVisible} setSelectedPeriod={(period) => this.setState({ selectedPeriod: period })} />
         {(selectedPeriod === 'Daily' || selectedPeriod === 'Monthly') && (
           <>
             <DateSelection date={`${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`} setDate={this.handleDateChange} />
@@ -108,10 +112,10 @@ class CronGenerator extends Component {
         )}
         {selectedPeriod === 'Custom' && (
           <>
-            <SelectionDayOfWeek dayOfWeek={dayOfWeek} setdayOfWeek={(day) => this.setState({ dayOfWeek: day })} />
-            <DateSelection date={`${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`} setDate={this.handleDateChange} />
-            <MinuteSelection minute={minute} setMinute={(min) => this.setState({ minute: min })} />
-            <HourSection hour={hour} setHour={(h) => this.setState({ hour: h })} />
+            <SelectionDayOfWeek isVisible={isResultVisible} dayOfWeek={dayOfWeek} setdayOfWeek={(day) => this.setState({ dayOfWeek: day })} />
+            <DateSelection isVisible={isResultVisible} date={`${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`} setDate={this.handleDateChange} />
+            <MinuteSelection isVisible={isResultVisible} minute={minute} setMinute={(min) => this.setState({ minute: min })} />
+            <HourSection isVisible={isResultVisible} hour={hour} setHour={(h) => this.setState({ hour: h })} />
           </>
         )}
         <ChangeButton onClick={this.handleChangeButtonClick} />
