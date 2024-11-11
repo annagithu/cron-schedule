@@ -11,8 +11,7 @@ const PeriodSection = ({ selectedPeriod, setSelectedPeriod, isVisible }) => {
             type="radio"
             value={period}
             checked={selectedPeriod === period}
-            onChange={() => setSelectedPeriod(period)
-            }
+            onChange={(e) => setSelectedPeriod(e.target.value)}
           />
           {period}
         </label>

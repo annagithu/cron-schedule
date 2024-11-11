@@ -80,6 +80,18 @@ class CronGenerator extends Component {
     this.setState({ day: day, month: month });
   };
 
+  handlePeriodChange = (period) => {
+    this.setState({ selectedPeriod: period });
+    let { minute, hour, day, month, dayOfWeek, isResultVisible } = this.state;
+    if (isResultVisible){
+      if (period == "Monthly") { dayOfWeek = "*"; day = "*" }
+      if (period == "Daily") { month = "*"; dayOfWeek = "*" }
+      if (period == "Weekly") { month = "*"; day = "*" }
+      this.setState({resultData : `${minute} ${hour} ${day} ${month} ${dayOfWeek}`})
+    }
+
+  }
+
   getResultData = () => {
     let { minute, hour, day, month, dayOfWeek, selectedPeriod } = this.state;
     if (selectedPeriod == "Monthly") { dayOfWeek = "*"; day = "*" }
@@ -90,24 +102,24 @@ class CronGenerator extends Component {
   };
 
   render() {
-    const { selectedPeriod, dayOfWeek, minute, hour, month, isResultVisible, resultData, year, day, isSaveButtonEnable, isPeriodVisible } = this.state;
+    const { selectedPeriod, dayOfWeek, minute, hour, month, isResultVisible, resultData, year, day, isSaveButtonEnable } = this.state;
 
     return (
       <div>
-        <PeriodSection selectedPeriod={selectedPeriod} isVisible = {isPeriodVisible} setSelectedPeriod={(period) => this.setState({ selectedPeriod: period })} />
+        <PeriodSection selectedPeriod={selectedPeriod} setSelectedPeriod={this.handlePeriodChange} />
         {(selectedPeriod === 'Daily' || selectedPeriod === 'Monthly') && (
           <>
-            <DateSelection date={`${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`} setDate={this.handleDateChange} />
-            <MinuteSelection minute={minute} setMinute={(min) => this.setState({ minute: min })} />
-            <HourSection hour={hour} setHour={(h) => this.setState({ hour: h })} />
+            <DateSelection isVisible={isResultVisible} date={`${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`} setDate={this.handleDateChange} />
+            <MinuteSelection isVisible={isResultVisible} minute={minute} setMinute={(min) => this.setState({ minute: min })} />
+            <HourSection isVisible={isResultVisible} hour={hour} setHour={(h) => this.setState({ hour: h })} />
           </>
         )}
 
         {selectedPeriod === 'Weekly' && (
           <>
-            <SelectionDayOfWeek dayOfWeek={dayOfWeek} setdayOfWeek={(day) => this.setState({ dayOfWeek: day })} />
-            <MinuteSelection minute={minute} setMinute={(min) => this.setState({ minute: min })} />
-            <HourSection hour={hour} setHour={(h) => this.setState({ hour: h })} />
+            <SelectionDayOfWeek isVisible={isResultVisible} dayOfWeek={dayOfWeek} setdayOfWeek={(day) => this.setState({ dayOfWeek: day })} />
+            <MinuteSelection isVisible={isResultVisible} minute={minute} setMinute={(min) => this.setState({ minute: min })} />
+            <HourSection isVisible={isResultVisible} hour={hour} setHour={(h) => this.setState({ hour: h })} />
           </>
         )}
         {selectedPeriod === 'Custom' && (
