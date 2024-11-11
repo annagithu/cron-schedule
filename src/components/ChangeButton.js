@@ -1,11 +1,7 @@
-import React from "react"
+import React from 'react';
 
 const ChangeButton = ({ onClick }) => {
-    return (
-        <button onClick={onClick}>
-            Enter value
-        </button>
-    );
+  return <button onClick={onClick}>Enter</button>;
 };
 
-export default ChangeButton
+export default ChangeButton;

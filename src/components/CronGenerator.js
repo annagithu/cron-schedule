@@ -1,89 +1,129 @@
-import React, { useState } from 'react'
-import Result from './Result'
-import SelectionDayOfWeek from './SelectionDayOfWeek'
-import MinuteSelection from './MinuteSelection'
-import HourSelection from './HourSection'
-import DateSelection from './DateSelection'
-import PeriodSection from './PeriodSection'
-import ChangeButton from './ChangeButton'
-import { useEffect } from 'react'
+import React, { Component } from 'react';
+import HourSection from './HourSection';
+import MinuteSelection from './MinuteSelection';
+import ChangeButton from './ChangeButton';
+import Result from './Result';
+import DateSelection from './DateSelection';
+import PeriodSection from './PeriodSection';
+import SelectionDayOfWeek from './SelectionDayOfWeek';
+import SaveToFileButton from './SaveToFileButton';
 
-const CronGenerator = () => {
-
-    const [period, setSelectedPeriod] = useState('Custom')
-    const [selectedMinutes, setSelectedMinutes] = useState('0');
-    const [hour, setSelectedHour] = useState('0')
-    const [date, setSelectedDate] = useState(new Date().toISOString().substring(0, 10))
-    const [dayOfWeek, setDayOfWeek] = useState('MON')
-
-    const [isDisabled, setIsDisabled] = useState(true)
-    const [resultValue, setResultValue] = useState('')
-
-    const handleChangeButton = () => {
-        setIsDisabled(prev => !prev)
-      };
-
-      const handleInputChange = (event) => {
-        setResultValue(event.target.value)
-      };
-
-      const handleLoad = (loadValue) => {
-        setSelectedMinutes(loadValue[0])
-        setSelectedHour(loadValue[1])
-        setSelectedDate(`${loadValue[3]}-${loadValue[2]}-${new Date().getFullYear().toString()}`) 
-        setDayOfWeek(loadValue[4])
-        setSelectedPeriod("Custom")
-      };
-
-      useEffect(() => { }, [dayOfWeek]);
-
-      const handleDayChange = (newDay) => {
-        setDayOfWeek(newDay)
-      }
+class CronGenerator extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedPeriod: 'Custom',
+      dayOfWeek: '*',
+      day: '*',
+      minute: '*',
+      hour: '*',
+      month: '*',
+      year: new Date().getFullYear(),
+      isResultVisible: false,
+      isSaveButtonEnable: true,
+      resultData: '',
+    };
+  }
   
-      const handleMinuteChange = (newMinutes) => {
-        setSelectedMinutes(newMinutes)
-      }
 
-      const handleHourChange = (newHour) => {
-        setSelectedHour(newHour)
-      }
+  clearResultData = () => {
+    let { minute, hour, day, month, dayOfWeek } = this.state;
+      if (minute) this.setState({ minute: '*' });
+      if (hour) this.setState({ hour: '*' });
+      if (day) this.setState({ day: '*' });
+      if (month) this.setState({ month: '*' });
+      if (dayOfWeek) this.setState({ dayOfWeek: '*' });
+  }
 
-      const handleDateChange = (newDate) => {
-        setSelectedDate(newDate) 
-      }
+  handleChangeButtonClick = () => {
+    this.setState((prevState) => ({
+      isResultVisible: !prevState.isResultVisible,
+    }));
+  };
 
-      const handleChangePeriod = (newPeriod) => {
-       setSelectedPeriod(newPeriod)
-      }
+  handleResultChange = (e) => {
 
-  return (
-    <div>
-        <PeriodSection onPeriodChange={handleChangePeriod}/>
+    const value = e.target.value;
 
-        <SelectionDayOfWeek onDayChange={handleDayChange}/>
+    const regex = /^(?:(\*|[0-5]?[0-9]) (\*|[01]?[0-9]|2[0-3]) (\*|[0-2]?[0-9]|3[01]) (\*|0?[1-9]|1[0-2]) (\*|MON|TUE|WED|THU|FRI|SAT|SUN))?$/
+    var inputResult = document.getElementById("input")
+    if (regex.test(value) && value) {
+      inputResult.style.color = 'green';
+      this.setState({ isSaveButtonEnable: true })
+    }
+    else {
+      inputResult.style.color = 'red';
+      this.setState({ isSaveButtonEnable: false })
+    }
 
-        <DateSelection onDateChange = {handleDateChange}/>
-     
-        <MinuteSelection onMinuteChange={handleMinuteChange} />
+    this.setState({ resultData: value });
 
-        <HourSelection onHourChange={handleHourChange} />
+    const [minute, hour, day, month, dayOfWeek] = value.split(' ');
 
-        <ChangeButton onClick={handleChangeButton} />
-     
-        <Result onLoad={handleLoad}
-        onChange={handleInputChange} 
-        period = {period} 
-        dayOfWeek = {dayOfWeek} 
-        date = {date} 
-        minute = {selectedMinutes} 
-        hour = {hour} 
-        value={resultValue} 
-        disabled={isDisabled}
+    if (minute) this.setState({ minute });
+    if (hour) this.setState({ hour });
+    if (day) this.setState({ day });
+    if (month) this.setState({ month });
+    if (dayOfWeek) this.setState({ dayOfWeek });
+  };
+
+  handleDateChange = (date) => {
+    this.setState({ day: date });
+
+    const dayObj = new Date(date);
+    const day = dayObj.getDate();
+    const month = dayObj.getMonth() + 1;
+    this.setState({ day: day, month: month });
+  };
+
+  getResultData = () => {
+    let { minute, hour, day, month, dayOfWeek, selectedPeriod } = this.state;
+    if (selectedPeriod == "Monthly") { dayOfWeek = "*"; day = "*" }
+    if (selectedPeriod == "Daily") { month = "*"; dayOfWeek = "*" }
+    if (selectedPeriod == "Weekly") { month = "*"; day = "*" }
+
+    return `${minute} ${hour} ${day} ${month} ${dayOfWeek}`;
+  };
+
+  render() {
+    const { selectedPeriod, dayOfWeek, minute, hour, month, isResultVisible, resultData, year, day, isSaveButtonEnable } = this.state;
+
+    return (
+      <div>
+        <PeriodSection selectedPeriod={selectedPeriod} setSelectedPeriod={(period) => this.setState({ selectedPeriod: period })} />
+        {(selectedPeriod === 'Daily' || selectedPeriod === 'Monthly') && (
+          <>
+            <DateSelection date={`${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`} setDate={this.handleDateChange} />
+            <MinuteSelection minute={minute} setMinute={(min) => this.setState({ minute: min })} />
+            <HourSection hour={hour} setHour={(h) => this.setState({ hour: h })} />
+          </>
+        )}
+
+        {selectedPeriod === 'Weekly' && (
+          <>
+            <SelectionDayOfWeek dayOfWeek={dayOfWeek} setdayOfWeek={(day) => this.setState({ dayOfWeek: day })} />
+            <MinuteSelection minute={minute} setMinute={(min) => this.setState({ minute: min })} />
+            <HourSection hour={hour} setHour={(h) => this.setState({ hour: h })} />
+          </>
+        )}
+        {selectedPeriod === 'Custom' && (
+          <>
+            <SelectionDayOfWeek dayOfWeek={dayOfWeek} setdayOfWeek={(day) => this.setState({ dayOfWeek: day })} />
+            <DateSelection date={`${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`} setDate={this.handleDateChange} />
+            <MinuteSelection minute={minute} setMinute={(min) => this.setState({ minute: min })} />
+            <HourSection hour={hour} setHour={(h) => this.setState({ hour: h })} />
+          </>
+        )}
+        <ChangeButton onClick={this.handleChangeButtonClick} />
+        <Result
+          isVisible={isResultVisible}
+          data={isResultVisible ? resultData  : this.getResultData()}
+          onChange={this.handleResultChange}
         />
-      
-    </div>
-  )
+        <SaveToFileButton visible={isSaveButtonEnable} />
+      </div>
+    );
+  }
 }
 
-export default CronGenerator
+export default CronGenerator;

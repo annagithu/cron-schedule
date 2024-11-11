@@ -1,19 +1,21 @@
-import React, {useState} from "react";
+import React from 'react';
 
-const HourSelection = ({ onHourChange }) => {
-    const [hour, setHour] = useState('0')
-  
-    const handleChange = (event) => {
-      const newHour = event.target.value
-      setHour(newHour)
-      onHourChange(newHour)
-    }
-  
-    return (
-      <div>
-      <label>Each: <input type="number" min = "0" max = "23" value={hour} onChange={handleChange} /> hours</label>
+const HourSection = ({ hour, setHour }) => {
+  return (
+    <div>
+      <label>
+        Each:
+        <input
+          type="number"
+          min="0"
+          max="23"
+          value={hour}
+          onChange={(e) => setHour(e.target.value)}
+        />
+        hours
+      </label>
     </div>
-    )
-  }
-  
-  export default HourSelection;
+  );
+};
+
+export default HourSection;
