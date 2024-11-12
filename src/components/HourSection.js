@@ -2,7 +2,7 @@ import React from 'react';
 
 const HourSection = ({ hour, setHour, isVisible }) => {
   return (
-    <div>
+    <div className = "number">
       <label>
         Each:
         <input

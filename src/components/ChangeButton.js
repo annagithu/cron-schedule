@@ -1,7 +1,9 @@
 import React from 'react';
 
 const ChangeButton = ({ onClick }) => {
-  return <button onClick={onClick}>Enter</button>;
+  return <div>
+    <button className = "button" onClick={onClick}>Enter</button>
+  </div> 
 };
 
 export default ChangeButton;

@@ -2,7 +2,7 @@ import React from 'react';
 
 const SelectionDayOfWeek = ({ selectedDay, setdayOfWeek, isVisible }) => {
   return (
-    <div>
+    <div className = "select">
       <label>Every day:</label>
       <select disabled = {isVisible} value={selectedDay} onChange={(e) => setdayOfWeek(e.target.value)}>
         {['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'].map((day) => (
