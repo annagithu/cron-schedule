@@ -80,9 +80,9 @@ class CronGenerator extends Component {
 
   validateResultByPeriod = (period) => {
     let { minute, hour, day, month, dayOfWeek } = this.state;
-      if (period == "Monthly") { dayOfWeek = "*"; day = "*" }
-      if (period == "Daily") { month = "*"; dayOfWeek = "*" }
-      if (period == "Weekly") { month = "*"; day = "*" }
+      if (period === "Monthly") { dayOfWeek = "*"; day = "*" }
+      if (period === "Daily") { month = "*"; dayOfWeek = "*" }
+      if (period === "Weekly") { month = "*"; day = "*" }
       return(`${minute} ${hour} ${day} ${month} ${dayOfWeek}`)
   }
 

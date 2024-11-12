@@ -1,4 +1,5 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.css'
 
 const PeriodSection = ({ selectedPeriod, setSelectedPeriod, isVisible }) => {
   return (
@@ -6,7 +7,7 @@ const PeriodSection = ({ selectedPeriod, setSelectedPeriod, isVisible }) => {
       
       {['Daily', 'Weekly', 'Monthly', 'Custom'].map((period) => (
         <label key={period}>
-          <input
+          <input className="custom-control radio"
             disabled = {isVisible}
             type="radio"
             value={period}

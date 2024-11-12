@@ -1,22 +1,18 @@
-import 'bootstrap/dist/css/bootstrap.css'
-import React from 'react';
-import CronGenerator from './components/CronGenerator';
 
+import './App.css';
+import CronGenerator from './components/CronGenerator'
 
 function App() {
   return (
-    <div className='container'>
-      <div className = 'jumbotron'>
-        <h3 className='display-3' >cron-editor</h3>
-      </div>
-      <div className='input-group'>
-        <div className='buttons'>
-          <CronGenerator />
-        </div>
-      </div>
+    <div className="App">
+      <header className="App-header">
+        <h1>
+          cron-editor
+        </h1>
+        <CronGenerator />
+      </header>
     </div>
-
-  )
+  );
 }
 
 export default App;
