@@ -5,7 +5,7 @@ const Result = ({ isVisible, data, onChange }) => {
     <div>
       <h3>Result</h3>
       <input
-      className='input'
+        className='input'
         value={data}
         id="input"
         type="text"

@@ -2,12 +2,12 @@ import React from 'react';
 
 const HourSection = ({ hour, setHour, isVisible }) => {
   return (
-    <div className = "number">
+    <div className="number">
       <label>
         Each:
         <input
           type="number"
-          disabled = {isVisible}
+          disabled={isVisible}
           min="0"
           max="23"
           value={hour}

@@ -5,7 +5,7 @@ const DateSelection = ({ date, setDate, isVisible }) => {
     <div>
       <label>At:
         <input
-          disabled = {isVisible}
+          disabled={isVisible}
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}

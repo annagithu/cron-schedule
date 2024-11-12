@@ -57,7 +57,7 @@ class CronGenerator extends Component {
     if (month) this.setState({ month });
     if (dayOfWeek) this.setState({ dayOfWeek });
 
-    if(result) this.setState({ isClearButtonVisible: true })
+    if (result) this.setState({ isClearButtonVisible: true })
   };
 
   handleDateChange = (date) => {
@@ -75,25 +75,25 @@ class CronGenerator extends Component {
     if (day) this.setState({ day: '*' });
     if (month) this.setState({ month: '*' });
     if (dayOfWeek) this.setState({ dayOfWeek: '*' });
-    if (resultData) this.setState({resultData: '* * * * *'})
+    if (resultData) this.setState({ resultData: '* * * * *' })
   }
 
   validateResultByPeriod = (period) => {
     let { minute, hour, day, month, dayOfWeek } = this.state;
-      if (period === "Monthly") { dayOfWeek = "*"; day = "*" }
-      if (period === "Daily") { month = "*"; dayOfWeek = "*" }
-      if (period === "Weekly") { month = "*"; day = "*" }
-      return(`${minute} ${hour} ${day} ${month} ${dayOfWeek}`)
+    if (period === "Monthly") { dayOfWeek = "*"; day = "*" }
+    if (period === "Daily") { month = "*"; dayOfWeek = "*" }
+    if (period === "Weekly") { month = "*"; day = "*" }
+    return (`${minute} ${hour} ${day} ${month} ${dayOfWeek}`)
   }
 
   handlePeriodChange = (period) => {
     this.setState({ selectedPeriod: period });
     const isResultVisible = this.state;
-    if(isResultVisible) {this.setState({ resultData: this.validateResultByPeriod(period) })}
+    if (isResultVisible) { this.setState({ resultData: this.validateResultByPeriod(period) }) }
   }
 
   getResultData = () => {
-    const {selectedPeriod} = this.state;
+    const { selectedPeriod } = this.state;
     return (this.validateResultByPeriod(selectedPeriod));
   };
 

@@ -2,12 +2,12 @@ import React from 'react';
 
 const PeriodSection = ({ selectedPeriod, setSelectedPeriod, isVisible }) => {
   return (
-    <div class = "form_radio_btn">
-      
+    <div class="form_radio_btn">
+
       {['Daily', 'Weekly', 'Monthly', 'Custom'].map((period) => (
         <label key={period}>
-          <input 
-            disabled = {isVisible}
+          <input
+            disabled={isVisible}
             type="radio"
             value={period}
             checked={selectedPeriod === period}
@@ -17,7 +17,7 @@ const PeriodSection = ({ selectedPeriod, setSelectedPeriod, isVisible }) => {
         </label>
       ))}
     </div>
-    
+
   );
 };
 
